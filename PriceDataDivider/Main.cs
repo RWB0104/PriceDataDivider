@@ -55,6 +55,18 @@ namespace PriceDataDivider
             }
         }
 
+        // TextBox에서 직접 경로 받기
+        private void TextBoxFilePath_TextChanged(object sender, EventArgs e)
+        {
+            filePath = textBoxFilePath.Text;
+        }
+
+        // TextBox에서 직접 경로 받기
+        private void TextBoxSave_TextChanged(object sender, EventArgs e)
+        {
+            savePath = textBoxSave.Text;
+        }
+
         // Excel 확장자 선택
         private void RadioButtonXLSX_CheckedChanged(object sender, EventArgs e)
         {
@@ -96,7 +108,17 @@ namespace PriceDataDivider
         // 작업 시작
         private void ButtonRun_Click(object sender, EventArgs e)
         {
-            backgroundWorker.RunWorkerAsync();
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            // 해당 파일이 있을 경우 동작
+            if (fileInfo.Exists)
+                backgroundWorker.RunWorkerAsync();
+
+            // 없을 경우 오류 출력
+            else
+                MessageBox.Show("해당 파일을 사용할 수 없습니다.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+
         }
 
         // 작업 프로세스
@@ -126,6 +148,7 @@ namespace PriceDataDivider
             int cnt = Convert.ToInt32(textBoxNum.Text);
             int size = Label(excelEnd, cnt);
 
+            // Progress Bar 최대값 지정
             progressBar.Maximum = size;
 
             // Excel 사용에 문제가 생길 경우

@@ -63,6 +63,7 @@
             this.textBoxFilePath.Size = new System.Drawing.Size(258, 21);
             this.textBoxFilePath.TabIndex = 2;
             this.textBoxFilePath.TabStop = false;
+            this.textBoxFilePath.TextChanged += new System.EventHandler(this.TextBoxFilePath_TextChanged);
             // 
             // buttonOpenFile
             // 
@@ -118,6 +119,7 @@
             this.textBoxSave.Size = new System.Drawing.Size(198, 21);
             this.textBoxSave.TabIndex = 5;
             this.textBoxSave.TabStop = false;
+            this.textBoxSave.TextChanged += new System.EventHandler(this.TextBoxSave_TextChanged);
             // 
             // buttonSave
             // 
