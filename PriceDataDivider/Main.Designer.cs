@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.textBoxFilePath = new System.Windows.Forms.TextBox();
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -42,12 +43,15 @@
             this.radioButtonXLSX = new System.Windows.Forms.RadioButton();
             this.radioButtonXLS = new System.Windows.Forms.RadioButton();
             this.groupBoxExtension = new System.Windows.Forms.GroupBox();
+            this.labelWarn = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelCount = new System.Windows.Forms.Label();
             this.labelProgress = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxSave = new System.Windows.Forms.GroupBox();
+            this.buttonData = new System.Windows.Forms.Button();
+            this.labelLogo = new System.Windows.Forms.Label();
             this.groupBoxExtension.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxSave.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxFilePath
@@ -55,11 +59,13 @@
             this.textBoxFilePath.Location = new System.Drawing.Point(12, 68);
             this.textBoxFilePath.Name = "textBoxFilePath";
             this.textBoxFilePath.Size = new System.Drawing.Size(258, 21);
-            this.textBoxFilePath.TabIndex = 0;
+            this.textBoxFilePath.TabIndex = 2;
+            this.textBoxFilePath.TabStop = false;
             // 
             // buttonOpenFile
             // 
-            this.buttonOpenFile.Location = new System.Drawing.Point(276, 66);
+            this.buttonOpenFile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonOpenFile.Location = new System.Drawing.Point(276, 67);
             this.buttonOpenFile.Name = "buttonOpenFile";
             this.buttonOpenFile.Size = new System.Drawing.Size(23, 23);
             this.buttonOpenFile.TabIndex = 1;
@@ -73,16 +79,17 @@
             // 
             // textBoxNum
             // 
-            this.textBoxNum.Location = new System.Drawing.Point(381, 68);
+            this.textBoxNum.Location = new System.Drawing.Point(347, 68);
             this.textBoxNum.Name = "textBoxNum";
             this.textBoxNum.Size = new System.Drawing.Size(52, 21);
-            this.textBoxNum.TabIndex = 2;
+            this.textBoxNum.TabIndex = 0;
+            this.textBoxNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxNum.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxNum_KeyPress);
             // 
             // radioButtonAuto
             // 
             this.radioButtonAuto.AutoSize = true;
-            this.radioButtonAuto.Location = new System.Drawing.Point(15, 32);
+            this.radioButtonAuto.Location = new System.Drawing.Point(15, 28);
             this.radioButtonAuto.Name = "radioButtonAuto";
             this.radioButtonAuto.Size = new System.Drawing.Size(68, 16);
             this.radioButtonAuto.TabIndex = 3;
@@ -93,7 +100,7 @@
             // radioButtonInput
             // 
             this.radioButtonInput.AutoSize = true;
-            this.radioButtonInput.Location = new System.Drawing.Point(15, 54);
+            this.radioButtonInput.Location = new System.Drawing.Point(15, 51);
             this.radioButtonInput.Name = "radioButtonInput";
             this.radioButtonInput.Size = new System.Drawing.Size(50, 16);
             this.radioButtonInput.TabIndex = 4;
@@ -106,10 +113,12 @@
             this.textBoxSave.Name = "textBoxSave";
             this.textBoxSave.Size = new System.Drawing.Size(198, 21);
             this.textBoxSave.TabIndex = 5;
+            this.textBoxSave.TabStop = false;
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(219, 76);
+            this.buttonSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonSave.Location = new System.Drawing.Point(219, 75);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(23, 23);
             this.buttonSave.TabIndex = 6;
@@ -126,18 +135,19 @@
             // 
             // buttonRun
             // 
-            this.buttonRun.Location = new System.Drawing.Point(358, 240);
+            this.buttonRun.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonRun.Location = new System.Drawing.Point(324, 228);
             this.buttonRun.Name = "buttonRun";
-            this.buttonRun.Size = new System.Drawing.Size(75, 23);
+            this.buttonRun.Size = new System.Drawing.Size(75, 48);
             this.buttonRun.TabIndex = 7;
-            this.buttonRun.Text = "button1";
+            this.buttonRun.Text = "Run";
             this.buttonRun.UseVisualStyleBackColor = true;
             this.buttonRun.Click += new System.EventHandler(this.ButtonRun_Click);
             // 
             // radioButtonXLSX
             // 
             this.radioButtonXLSX.AutoSize = true;
-            this.radioButtonXLSX.Location = new System.Drawing.Point(21, 28);
+            this.radioButtonXLSX.Location = new System.Drawing.Point(21, 32);
             this.radioButtonXLSX.Name = "radioButtonXLSX";
             this.radioButtonXLSX.Size = new System.Drawing.Size(51, 16);
             this.radioButtonXLSX.TabIndex = 8;
@@ -149,7 +159,7 @@
             // radioButtonXLS
             // 
             this.radioButtonXLS.AutoSize = true;
-            this.radioButtonXLS.Location = new System.Drawing.Point(21, 72);
+            this.radioButtonXLS.Location = new System.Drawing.Point(21, 63);
             this.radioButtonXLS.Name = "radioButtonXLS";
             this.radioButtonXLS.Size = new System.Drawing.Size(44, 16);
             this.radioButtonXLS.TabIndex = 9;
@@ -159,26 +169,37 @@
             // 
             // groupBoxExtension
             // 
+            this.groupBoxExtension.Controls.Add(this.labelWarn);
             this.groupBoxExtension.Controls.Add(this.radioButtonXLS);
             this.groupBoxExtension.Controls.Add(this.radioButtonXLSX);
-            this.groupBoxExtension.Location = new System.Drawing.Point(314, 114);
+            this.groupBoxExtension.Location = new System.Drawing.Point(300, 109);
             this.groupBoxExtension.Name = "groupBoxExtension";
             this.groupBoxExtension.Size = new System.Drawing.Size(99, 108);
             this.groupBoxExtension.TabIndex = 10;
             this.groupBoxExtension.TabStop = false;
             this.groupBoxExtension.Text = "Extension";
             // 
+            // labelWarn
+            // 
+            this.labelWarn.AutoSize = true;
+            this.labelWarn.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.labelWarn.Location = new System.Drawing.Point(19, 82);
+            this.labelWarn.Name = "labelWarn";
+            this.labelWarn.Size = new System.Drawing.Size(51, 12);
+            this.labelWarn.TabIndex = 10;
+            this.labelWarn.Text = "(불안정)";
+            // 
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(12, 27);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(421, 23);
+            this.progressBar.Size = new System.Drawing.Size(387, 23);
             this.progressBar.TabIndex = 11;
             // 
             // labelCount
             // 
             this.labelCount.AutoSize = true;
-            this.labelCount.Location = new System.Drawing.Point(414, 11);
+            this.labelCount.Location = new System.Drawing.Point(363, 12);
             this.labelCount.Name = "labelCount";
             this.labelCount.Size = new System.Drawing.Size(9, 12);
             this.labelCount.TabIndex = 12;
@@ -193,25 +214,49 @@
             this.labelProgress.TabIndex = 13;
             this.labelProgress.Text = " ";
             // 
-            // groupBox1
+            // groupBoxSave
             // 
-            this.groupBox1.Controls.Add(this.radioButtonAuto);
-            this.groupBox1.Controls.Add(this.radioButtonInput);
-            this.groupBox1.Controls.Add(this.textBoxSave);
-            this.groupBox1.Controls.Add(this.buttonSave);
-            this.groupBox1.Location = new System.Drawing.Point(26, 110);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 112);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBoxSave.Controls.Add(this.radioButtonAuto);
+            this.groupBoxSave.Controls.Add(this.radioButtonInput);
+            this.groupBoxSave.Controls.Add(this.textBoxSave);
+            this.groupBoxSave.Controls.Add(this.buttonSave);
+            this.groupBoxSave.Location = new System.Drawing.Point(14, 105);
+            this.groupBoxSave.Name = "groupBoxSave";
+            this.groupBoxSave.Size = new System.Drawing.Size(256, 112);
+            this.groupBoxSave.TabIndex = 14;
+            this.groupBoxSave.TabStop = false;
+            this.groupBoxSave.Text = "Save";
+            // 
+            // buttonData
+            // 
+            this.buttonData.BackgroundImage = global::PriceDataDivider.Properties.Resources.data_logo;
+            this.buttonData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonData.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonData.Location = new System.Drawing.Point(14, 228);
+            this.buttonData.Name = "buttonData";
+            this.buttonData.Size = new System.Drawing.Size(65, 48);
+            this.buttonData.TabIndex = 15;
+            this.buttonData.UseVisualStyleBackColor = true;
+            this.buttonData.Click += new System.EventHandler(this.ButtonData_Click);
+            // 
+            // labelLogo
+            // 
+            this.labelLogo.AutoSize = true;
+            this.labelLogo.Location = new System.Drawing.Point(152, 264);
+            this.labelLogo.Name = "labelLogo";
+            this.labelLogo.Size = new System.Drawing.Size(112, 12);
+            this.labelLogo.TabIndex = 16;
+            this.labelLogo.Text = "Developed by RWB";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 282);
-            this.Controls.Add(this.groupBox1);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(412, 286);
+            this.Controls.Add(this.labelLogo);
+            this.Controls.Add(this.buttonData);
+            this.Controls.Add(this.groupBoxSave);
             this.Controls.Add(this.labelProgress);
             this.Controls.Add(this.labelCount);
             this.Controls.Add(this.progressBar);
@@ -220,13 +265,16 @@
             this.Controls.Add(this.textBoxNum);
             this.Controls.Add(this.buttonOpenFile);
             this.Controls.Add(this.textBoxFilePath);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Main";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Main";
+            this.Text = "공시지가 자동분할";
             this.groupBoxExtension.ResumeLayout(false);
             this.groupBoxExtension.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxSave.ResumeLayout(false);
+            this.groupBoxSave.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -250,6 +298,9 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelCount;
         private System.Windows.Forms.Label labelProgress;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxSave;
+        private System.Windows.Forms.Label labelWarn;
+        private System.Windows.Forms.Button buttonData;
+        private System.Windows.Forms.Label labelLogo;
     }
 }
