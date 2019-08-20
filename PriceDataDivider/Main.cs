@@ -34,19 +34,41 @@ namespace PriceDataDivider
         private void TextBoxNum_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
                 e.Handled = true;
+            }
         }
 
         // 저장경로 선택
         private void RadioButtonAuto_CheckedChanged(object sender, EventArgs e)
         {
+            // 저장경로 자동 지정
             if (radioButtonAuto.Checked)
             {
-                savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\공시지가_" + dateStamp;
-                textBoxSave.Enabled = false;
-                buttonSave.Enabled = false;
+                // 공시지가 분할 모드
+                if (radioButtonPrice.Checked)
+                {
+                    savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\공시지가_" + dateStamp;
+                    textBoxSave.Enabled = false;
+                    buttonSave.Enabled = false;
+                }
+
+                // 우편번호 분할 모드
+                else if (radioButtonAddress.Checked)
+                {
+                    savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\우편변호_" + dateStamp;
+                    textBoxSave.Enabled = false;
+                    buttonSave.Enabled = false;
+                }
+
+                // 알수없는 모드
+                else
+                {
+                    MessageBox.Show("모드 오류", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
+            // 저장경로 수동지정
             else
             {
                 savePath = textBoxSave.Text;
@@ -71,10 +93,14 @@ namespace PriceDataDivider
         private void RadioButtonXLSX_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButtonXLSX.Checked)
+            {
                 extension = "xlsx";
+            }
 
             else
+            {
                 extension = "xls";
+            }
         }
 
         // 공시지가 Excel 선택
@@ -112,17 +138,34 @@ namespace PriceDataDivider
 
             // 해당 파일이 있을 경우 동작
             if (fileInfo.Exists)
-                backgroundWorker.RunWorkerAsync();
+            {
+                // 공시지가 분할 모드
+                if (radioButtonPrice.Checked)
+                {
+                    backgroundWorkerPrice.RunWorkerAsync();
+                }
 
+                // 우편번호 분할 모드
+                else if (radioButtonAddress.Checked)
+                {
+                    // TODO..
+                }
+
+                // 알수없는 모드
+                else
+                {
+                    MessageBox.Show("모드 오류", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             // 없을 경우 오류 출력
             else
+            {
                 MessageBox.Show("해당 파일을 사용할 수 없습니다.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-
+            }
         }
 
-        // 작업 프로세스
-        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        // 공시지가 작업 프로세스
+        private void BackgroundWorkerPrice_DoWork(object sender, DoWorkEventArgs e)
         {
             labelProgress.Text = "작업 준비중...";
 
@@ -228,7 +271,7 @@ namespace PriceDataDivider
         }
 
         // 작업 종료
-        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void BackgroundWorkerPrice_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             labelProgress.Text = "작업 완료";
             progressBar.Value = 0;

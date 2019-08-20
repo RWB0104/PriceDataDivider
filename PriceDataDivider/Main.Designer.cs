@@ -38,7 +38,7 @@
             this.textBoxSave = new System.Windows.Forms.TextBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorkerPrice = new System.ComponentModel.BackgroundWorker();
             this.radioButtonXLSX = new System.Windows.Forms.RadioButton();
             this.radioButtonXLS = new System.Windows.Forms.RadioButton();
             this.groupBoxExtension = new System.Windows.Forms.GroupBox();
@@ -52,13 +52,16 @@
             this.buttonData = new System.Windows.Forms.Button();
             this.buttonRun = new System.Windows.Forms.Button();
             this.labelEmail = new System.Windows.Forms.Label();
+            this.radioButtonPrice = new System.Windows.Forms.RadioButton();
+            this.radioButtonAddress = new System.Windows.Forms.RadioButton();
+            this.backgroundWorkerAddress = new System.ComponentModel.BackgroundWorker();
             this.groupBoxExtension.SuspendLayout();
             this.groupBoxSave.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxFilePath
             // 
-            this.textBoxFilePath.Location = new System.Drawing.Point(12, 68);
+            this.textBoxFilePath.Location = new System.Drawing.Point(12, 96);
             this.textBoxFilePath.Name = "textBoxFilePath";
             this.textBoxFilePath.Size = new System.Drawing.Size(258, 21);
             this.textBoxFilePath.TabIndex = 2;
@@ -68,7 +71,7 @@
             // buttonOpenFile
             // 
             this.buttonOpenFile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonOpenFile.Location = new System.Drawing.Point(276, 67);
+            this.buttonOpenFile.Location = new System.Drawing.Point(276, 95);
             this.buttonOpenFile.Name = "buttonOpenFile";
             this.buttonOpenFile.Size = new System.Drawing.Size(23, 23);
             this.buttonOpenFile.TabIndex = 1;
@@ -83,7 +86,7 @@
             // textBoxNum
             // 
             this.textBoxNum.BackColor = System.Drawing.SystemColors.Info;
-            this.textBoxNum.Location = new System.Drawing.Point(347, 68);
+            this.textBoxNum.Location = new System.Drawing.Point(347, 96);
             this.textBoxNum.MaxLength = 10;
             this.textBoxNum.Name = "textBoxNum";
             this.textBoxNum.Size = new System.Drawing.Size(52, 21);
@@ -132,12 +135,12 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.ButtonSave_Click);
             // 
-            // backgroundWorker
+            // backgroundWorkerPrice
             // 
-            this.backgroundWorker.WorkerReportsProgress = true;
-            this.backgroundWorker.WorkerSupportsCancellation = true;
-            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
-            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
+            this.backgroundWorkerPrice.WorkerReportsProgress = true;
+            this.backgroundWorkerPrice.WorkerSupportsCancellation = true;
+            this.backgroundWorkerPrice.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerPrice_DoWork);
+            this.backgroundWorkerPrice.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerPrice_RunWorkerCompleted);
             // 
             // radioButtonXLSX
             // 
@@ -167,7 +170,7 @@
             this.groupBoxExtension.Controls.Add(this.labelWarn);
             this.groupBoxExtension.Controls.Add(this.radioButtonXLS);
             this.groupBoxExtension.Controls.Add(this.radioButtonXLSX);
-            this.groupBoxExtension.Location = new System.Drawing.Point(300, 109);
+            this.groupBoxExtension.Location = new System.Drawing.Point(300, 137);
             this.groupBoxExtension.Name = "groupBoxExtension";
             this.groupBoxExtension.Size = new System.Drawing.Size(99, 108);
             this.groupBoxExtension.TabIndex = 10;
@@ -215,7 +218,7 @@
             this.groupBoxSave.Controls.Add(this.radioButtonInput);
             this.groupBoxSave.Controls.Add(this.textBoxSave);
             this.groupBoxSave.Controls.Add(this.buttonSave);
-            this.groupBoxSave.Location = new System.Drawing.Point(14, 105);
+            this.groupBoxSave.Location = new System.Drawing.Point(14, 133);
             this.groupBoxSave.Name = "groupBoxSave";
             this.groupBoxSave.Size = new System.Drawing.Size(256, 112);
             this.groupBoxSave.TabIndex = 14;
@@ -225,7 +228,7 @@
             // labelLogo
             // 
             this.labelLogo.AutoSize = true;
-            this.labelLogo.Location = new System.Drawing.Point(158, 245);
+            this.labelLogo.Location = new System.Drawing.Point(158, 273);
             this.labelLogo.Name = "labelLogo";
             this.labelLogo.Size = new System.Drawing.Size(112, 12);
             this.labelLogo.TabIndex = 16;
@@ -245,7 +248,7 @@
             this.buttonData.BackgroundImage = global::PriceDataDivider.Properties.Resources.data_logo;
             this.buttonData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonData.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonData.Location = new System.Drawing.Point(14, 228);
+            this.buttonData.Location = new System.Drawing.Point(14, 256);
             this.buttonData.Name = "buttonData";
             this.buttonData.Size = new System.Drawing.Size(65, 48);
             this.buttonData.TabIndex = 15;
@@ -257,7 +260,7 @@
             this.buttonRun.BackgroundImage = global::PriceDataDivider.Properties.Resources.Excel;
             this.buttonRun.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonRun.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonRun.Location = new System.Drawing.Point(347, 228);
+            this.buttonRun.Location = new System.Drawing.Point(347, 256);
             this.buttonRun.Name = "buttonRun";
             this.buttonRun.Size = new System.Drawing.Size(53, 48);
             this.buttonRun.TabIndex = 7;
@@ -267,18 +270,42 @@
             // labelEmail
             // 
             this.labelEmail.AutoSize = true;
-            this.labelEmail.Location = new System.Drawing.Point(161, 264);
+            this.labelEmail.Location = new System.Drawing.Point(161, 292);
             this.labelEmail.Name = "labelEmail";
             this.labelEmail.Size = new System.Drawing.Size(102, 12);
             this.labelEmail.TabIndex = 18;
             this.labelEmail.Text = "psj1789@ksic.net";
+            // 
+            // radioButtonPrice
+            // 
+            this.radioButtonPrice.AutoSize = true;
+            this.radioButtonPrice.Checked = true;
+            this.radioButtonPrice.Location = new System.Drawing.Point(14, 63);
+            this.radioButtonPrice.Name = "radioButtonPrice";
+            this.radioButtonPrice.Size = new System.Drawing.Size(71, 16);
+            this.radioButtonPrice.TabIndex = 19;
+            this.radioButtonPrice.TabStop = true;
+            this.radioButtonPrice.Text = "공시지가";
+            this.radioButtonPrice.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonAddress
+            // 
+            this.radioButtonAddress.AutoSize = true;
+            this.radioButtonAddress.Location = new System.Drawing.Point(91, 63);
+            this.radioButtonAddress.Name = "radioButtonAddress";
+            this.radioButtonAddress.Size = new System.Drawing.Size(71, 16);
+            this.radioButtonAddress.TabIndex = 20;
+            this.radioButtonAddress.Text = "우편번호";
+            this.radioButtonAddress.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(412, 286);
+            this.ClientSize = new System.Drawing.Size(412, 313);
+            this.Controls.Add(this.radioButtonAddress);
+            this.Controls.Add(this.radioButtonPrice);
             this.Controls.Add(this.labelEmail);
             this.Controls.Add(this.labelCopyright);
             this.Controls.Add(this.labelLogo);
@@ -317,7 +344,7 @@
         private System.Windows.Forms.TextBox textBoxSave;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerPrice;
         private System.Windows.Forms.Button buttonRun;
         private System.Windows.Forms.RadioButton radioButtonXLSX;
         private System.Windows.Forms.RadioButton radioButtonXLS;
@@ -331,5 +358,8 @@
         private System.Windows.Forms.Label labelLogo;
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.Label labelEmail;
+        private System.Windows.Forms.RadioButton radioButtonPrice;
+        private System.Windows.Forms.RadioButton radioButtonAddress;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerAddress;
     }
 }
