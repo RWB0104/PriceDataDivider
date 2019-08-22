@@ -431,9 +431,6 @@ namespace PriceDataDivider
                 // ExcelRange와 동일한 원리. 단, Origin의 Range는 계속 이동
                 Excel.Range OriginRange = OriginSheet.Range[start + ":" + end];
 
-                // 해당 Origin의 값 붙여넣기
-                ExcelRange.Value = OriginRange.Value;
-
                 // Column 처리
                 for (int n = 1; n <= 26; n++)
                 {
@@ -461,6 +458,9 @@ namespace PriceDataDivider
                         resultRange.NumberFormat = "0";
                     }
                 }
+
+                // 해당 Origin의 값 붙여넣기
+                ExcelRange.Value = OriginRange.Value;
 
                 // Cell 붙여넣은 후 Excel 저장
                 ExcelBook.SaveAs(savePath + "\\주소" + j + "." + extension);
@@ -492,7 +492,7 @@ namespace PriceDataDivider
             progressBar.Value = 0;
             MessageBox.Show("공시지가 분할 완료", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
+        
         // 주소 작업 종료
         private void BackgroundWorkerAddress_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
