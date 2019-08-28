@@ -15,6 +15,9 @@ namespace PriceDataDivider
         string extension = null;
         private readonly string dateStamp = DateTime.Now.ToString("yyMMdd");
 
+        Excel.Application OriginApp = null;
+        Excel.Application ExcelApp = null;
+
         public Main()
         {
             InitializeComponent();
@@ -250,9 +253,9 @@ namespace PriceDataDivider
             }
 
             // 공시지가 Excel 속성
-            Excel.Application OriginApp = new Excel.Application
+            OriginApp = new Excel.Application
             {
-                Visible = true,
+                Visible = false,
                 DisplayAlerts = false,
                 Interactive = false
             };
@@ -287,7 +290,7 @@ namespace PriceDataDivider
                 progressBar.Value = j;
 
                 // 나눠진 Excel 속성
-                Excel.Application ExcelApp = new Excel.Application
+                ExcelApp = new Excel.Application
                 {
                     Visible = false,
                     DisplayAlerts = false,
@@ -327,22 +330,19 @@ namespace PriceDataDivider
                 j++;
 
                 // Excel 인스턴스 제거
-                ExcelBook.Close();
+                uint copyProcessId = 0;
+
+                GetWindowThreadProcessId(new IntPtr(ExcelApp.Hwnd), out copyProcessId);
+
                 ExcelApp.Quit();
-
-                CloseExcel(ExcelRange);
-                CloseExcel(ExcelSheet);
-                CloseExcel(ExcelBook);
-                CloseExcel(ExcelApp);
+                killProcess(copyProcessId);
             }
-
             // Excel 인스턴스 제거
-            OriginBook.Close();
-            OriginApp.Quit();
+            uint originProcessId = 0;
 
-            CloseExcel(OriginSheet);
-            CloseExcel(OriginBook);
-            CloseExcel(OriginApp);
+            GetWindowThreadProcessId(new IntPtr(OriginApp.Hwnd), out originProcessId);
+            OriginApp.Quit();
+            killProcess(originProcessId);
         }
 
         // 주소 작업 프로세스
@@ -359,9 +359,9 @@ namespace PriceDataDivider
             }
 
             // 주소 Excel 속성
-            Excel.Application OriginApp = new Excel.Application
+            OriginApp = new Excel.Application
             {
-                Visible = true,
+                Visible = false,
                 DisplayAlerts = false,
                 Interactive = false
             };
@@ -396,7 +396,7 @@ namespace PriceDataDivider
                 progressBar.Value = j;
 
                 // 나눠진 Excel 속성
-                Excel.Application ExcelApp = new Excel.Application
+                ExcelApp = new Excel.Application
                 {
                     Visible = false,
                     DisplayAlerts = false,
@@ -467,22 +467,19 @@ namespace PriceDataDivider
                 j++;
 
                 // Excel 인스턴스 제거
-                ExcelBook.Close();
+                uint copyProcessId = 0;
+
+                GetWindowThreadProcessId(new IntPtr(ExcelApp.Hwnd), out copyProcessId);
+
                 ExcelApp.Quit();
-
-                CloseExcel(ExcelRange);
-                CloseExcel(ExcelSheet);
-                CloseExcel(ExcelBook);
-                CloseExcel(ExcelApp);
+                killProcess(copyProcessId);
             }
-
             // Excel 인스턴스 제거
-            OriginBook.Close();
-            OriginApp.Quit();
+            uint originProcessId = 0;
 
-            CloseExcel(OriginSheet);
-            CloseExcel(OriginBook);
-            CloseExcel(OriginApp);
+            GetWindowThreadProcessId(new IntPtr(OriginApp.Hwnd), out originProcessId);
+            OriginApp.Quit();
+            killProcess(originProcessId);
         }
 
         // 공시지가 작업 종료
@@ -510,30 +507,7 @@ namespace PriceDataDivider
             return (int)Math.Ceiling(num);
         }
 
-        // Excel 강제 종료
-        private void CloseExcel(object obj)
-        {
-            try
-            {
-                if (obj != null)
-                {
-                    Marshal.ReleaseComObject(obj);
-                    obj = null;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                obj = null;
-                throw ex;
-            }
-
-            finally
-            {
-                GC.Collect();
-            }
-        }
-
+        // 우편번호 데이터 Column 변경 및 제거
         private string AddressColumn(string cell)
         {
             // 해당 Column에 매칭되는 DB의 Column으로 치환
@@ -617,6 +591,49 @@ namespace PriceDataDivider
                 // 나머지 필요없는 Column 표시
                 default:
                     return "제거";
+            }
+        }
+
+        // Excel Process 확인
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        // Process Kill
+        public void killProcess(uint processID)
+        {
+            // ProcessID가 0이 아닐 경우 (종료되지 않음)
+            if (processID != 0)
+            {
+                System.Diagnostics.Process process = System.Diagnostics.Process.GetProcessById((int)processID);
+                process.CloseMainWindow();
+                process.Refresh();
+                process.Kill();
+            }
+        }
+
+        // 종료 처리
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Excel 종료 시도
+            try
+            {
+                uint copyProcessId = 0;
+                uint originProcessId = 0;
+
+                GetWindowThreadProcessId(new IntPtr(ExcelApp.Hwnd), out copyProcessId);
+                GetWindowThreadProcessId(new IntPtr(OriginApp.Hwnd), out originProcessId);
+
+                ExcelApp.Quit();
+                OriginApp.Quit();
+
+                killProcess(copyProcessId);
+                killProcess(originProcessId);
+            }
+
+            // 예외값 처리
+            catch
+            {
+                // 오류 발생 시 그냥 종료함
             }
         }
     }

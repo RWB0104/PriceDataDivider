@@ -103,10 +103,12 @@
             // radioButtonInput
             // 
             this.radioButtonInput.AutoSize = true;
+            this.radioButtonInput.Checked = true;
             this.radioButtonInput.Location = new System.Drawing.Point(15, 51);
             this.radioButtonInput.Name = "radioButtonInput";
             this.radioButtonInput.Size = new System.Drawing.Size(50, 16);
             this.radioButtonInput.TabIndex = 4;
+            this.radioButtonInput.TabStop = true;
             this.radioButtonInput.Text = "Input";
             this.radioButtonInput.UseVisualStyleBackColor = true;
             // 
@@ -191,12 +193,12 @@
             // 
             // labelCount
             // 
-            this.labelCount.AutoSize = true;
-            this.labelCount.Location = new System.Drawing.Point(387, 8);
+            this.labelCount.Location = new System.Drawing.Point(313, 8);
             this.labelCount.Name = "labelCount";
-            this.labelCount.Size = new System.Drawing.Size(9, 12);
+            this.labelCount.Size = new System.Drawing.Size(83, 12);
             this.labelCount.TabIndex = 12;
             this.labelCount.Text = " ";
+            this.labelCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelProgress
             // 
@@ -265,12 +267,10 @@
             // radioButtonPrice
             // 
             this.radioButtonPrice.AutoSize = true;
-            this.radioButtonPrice.Checked = true;
             this.radioButtonPrice.Location = new System.Drawing.Point(14, 54);
             this.radioButtonPrice.Name = "radioButtonPrice";
             this.radioButtonPrice.Size = new System.Drawing.Size(71, 16);
             this.radioButtonPrice.TabIndex = 19;
-            this.radioButtonPrice.TabStop = true;
             this.radioButtonPrice.Text = "공시지가";
             this.radioButtonPrice.UseVisualStyleBackColor = true;
             this.radioButtonPrice.CheckedChanged += new System.EventHandler(this.RadioButtonPrice_CheckedChanged);
@@ -278,10 +278,12 @@
             // radioButtonAddress
             // 
             this.radioButtonAddress.AutoSize = true;
+            this.radioButtonAddress.Checked = true;
             this.radioButtonAddress.Location = new System.Drawing.Point(91, 54);
             this.radioButtonAddress.Name = "radioButtonAddress";
             this.radioButtonAddress.Size = new System.Drawing.Size(47, 16);
             this.radioButtonAddress.TabIndex = 20;
+            this.radioButtonAddress.TabStop = true;
             this.radioButtonAddress.Text = "주소";
             this.radioButtonAddress.UseVisualStyleBackColor = true;
             this.radioButtonAddress.CheckedChanged += new System.EventHandler(this.RadioButtonAddress_CheckedChanged);
@@ -317,6 +319,7 @@
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "데이터 자동분할";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.groupBoxExtension.ResumeLayout(false);
             this.groupBoxExtension.PerformLayout();
             this.groupBoxSave.ResumeLayout(false);
