@@ -33,9 +33,20 @@ namespace PriceDataDivider
 			CheckForIllegalCrossThreadCalls = false;
 		}
 
+		// 프로그램 실행 시
 		private void Main_Load(object sender, EventArgs e)
 		{
+			// 공시지가 모드
+			if (radioButtonPrice.Checked)
+			{
+				buttonData.BackgroundImage = Properties.Resources.data_logo;
+			}
 
+			// 주소 모드
+			else if (radioButtonAuto.Checked)
+			{
+				buttonData.BackgroundImage = Properties.Resources.post_logo;
+			}
 		}
 
 		// 숫자만 입력받기
@@ -83,7 +94,7 @@ namespace PriceDataDivider
 			// 저장경로 자동 지정일 경우
 			if (radioButtonAuto.Checked)
 			{
-				savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\우편변호_" + dateStamp;
+				savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + openFileDialog.SafeFileName.Split('.')[0] + "_" + dateStamp;
 				textBoxSave.Enabled = false;
 				buttonSave.Enabled = false;
 			}
@@ -120,7 +131,7 @@ namespace PriceDataDivider
 				// 주소 분할 모드
 				else if (radioButtonAddress.Checked)
 				{
-					savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\우편변호_" + dateStamp;
+					savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + openFileDialog.SafeFileName.Split('.')[0] + "_" + dateStamp;
 					textBoxSave.Enabled = false;
 					buttonSave.Enabled = false;
 				}
@@ -167,15 +178,20 @@ namespace PriceDataDivider
 			}
 		}
 
-		// 공시지가 Excel 선택
+		// Excel 선택
 		private void ButtonOpenFile_Click(object sender, EventArgs e)
 		{
-			openFileDialog.Filter = "Excel Files|*.xls; *.xlsx";
+			openFileDialog.Filter = "Excel Files|*.xlsx";
 
 			if (openFileDialog.ShowDialog() == DialogResult.OK)
 			{
 				textBoxFilePath.Text = openFileDialog.FileName;
 				filePath = openFileDialog.FileName;
+			}
+
+			if (radioButtonAuto.Checked)
+			{
+				savePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + openFileDialog.SafeFileName.Split('.')[0] + "_" + dateStamp;
 			}
 		}
 
@@ -476,11 +492,9 @@ namespace PriceDataDivider
 							resultRange.NumberFormat = "@";
 						}
 
-						// Column이 지정된 이름일 경우
-						if (AddressColumn(cellRange.Value) == "DORO_CD" || AddressColumn(cellRange.Value) == "BD_MAN_NO" || AddressColumn(cellRange.Value) == "BJ_CD")
+						if (AddressColumn(cellRange.Value) == "BD_MAN_NO")
 						{
-							// 해당 Column 숫자 서식 지정 (미지정 시 지수 형태로 출력)
-							resultRange.NumberFormat = "#";
+							resultRange.NumberFormat = "@";
 						}
 					}
 
@@ -491,7 +505,7 @@ namespace PriceDataDivider
 					if (extension.Equals("xls"))
 					{
 						// xls로 저장
-						ExcelBook.SaveAs(savePath + "\\주소" + j + "." + extension, Excel.XlFileFormat.xlExcel8);
+						ExcelBook.SaveAs(savePath + "\\" + openFileDialog.SafeFileName.Split('.')[0] + "_" + j + "." + extension, Excel.XlFileFormat.xlExcel8);
 
 					}
 
@@ -499,7 +513,7 @@ namespace PriceDataDivider
 					else if (extension.Equals("xlsx"))
 					{
 						// xlsx로 저장
-						ExcelBook.SaveAs(savePath + "\\주소" + j + "." + extension);
+						ExcelBook.SaveAs(savePath + "\\" + openFileDialog.SafeFileName.Split('.')[0] + "_" + j + "." + extension);
 					}
 
 					j++;
@@ -531,6 +545,7 @@ namespace PriceDataDivider
 		// 공시지가 작업 종료
 		private void BackgroundWorkerPrice_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			// 작업이 취소됐을 경우
 			if (e.Cancelled)
 			{
 				labelProgress.Text = "공시지가 작업 실패";
@@ -538,6 +553,7 @@ namespace PriceDataDivider
 				progressBar.Value = 0;
 			}
 
+			// 정상종료됐을 경우
 			else
 			{
 				labelProgress.Text = "공시지가 작업 완료";
@@ -550,6 +566,7 @@ namespace PriceDataDivider
 		// 주소 작업 종료
 		private void BackgroundWorkerAddress_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			// 작업이 취소됐을 경우
 			if (e.Cancelled)
 			{
 				labelProgress.Text = "주소 작업 실패";
@@ -557,6 +574,7 @@ namespace PriceDataDivider
 				progressBar.Value = 0;
 			}
 
+			// 정상종료됐을 경우
 			else
 			{
 				labelProgress.Text = "주소 작업 완료";
